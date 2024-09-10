@@ -7,8 +7,6 @@ on:
    pull_request:
     branches:
       - main
-  pull_request:
-  merge_group:
 
 jobs:
   build:
@@ -107,4 +105,3 @@ jobs:
         with:
           name: ${{ steps.prepareArtifact.outputs.debugName }}-symbols
           path: "zygiskd/build/symbols/debug"
- 
