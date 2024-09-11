@@ -263,7 +263,13 @@ with open('jni_hooks.hpp', 'w') as f:
 
     methods = [spec_q, spec_q_alt, spec_r, spec_u, spec_samsung_q, spec_grapheneos_u]
     f.write(gen_jni_def(zygote, methods))
-
+    pattern = r'HookContext'
+    replacement = 'ZygiskContext'
+    with fileinput.FileInput(jni_hooks.hpp, inplace=True) as file:
+        for line in file:
+            line = re.sub(pattern, replacement, line)
+            print(line, end='')
+            
     methods = [server_l, server_samsung_q]
     f.write(gen_jni_def(zygote, methods))
 
@@ -301,17 +307,3 @@ static void do_hook_zygote(JNIEnv *env) {
     jni_hook_list->emplace(clz, std::move(hooks));
 }
 """)
-def replace_hook_context(file_path):
-    # Pattern to match the exact string including potential variations
-    pattern = r'HookContext ctx(env, &args);'
-    replacement = 'ZygiskContext ctx(env, &args);'
-    
-    # Open the file and replace occurrences in-place
-    with fileinput.FileInput(file_path, inplace=True) as file:
-        for line in file:
-            # Replace all occurrences of the pattern
-            line = re.sub(pattern, replacement, line)
-            print(line, end='')
-
-file_path = 'jni_hooks.hpp'
-replace_hook_context(file_path)
