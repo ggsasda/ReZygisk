@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-import fileinput
-import os
-import re
 
 primitives = ['jint', 'jboolean', 'jlong']
 
