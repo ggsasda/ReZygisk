@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import fileinput
+import os
+import re
 
 primitives = ['jint', 'jboolean', 'jlong']
 
@@ -298,3 +301,12 @@ static void do_hook_zygote(JNIEnv *env) {
     jni_hook_list->emplace(clz, std::move(hooks));
 }
 """)
+def replace_hook_context(file_path):
+    with fileinput.FileInput(file_path, inplace=True) as file:
+        for line in file:
+            # Replace the target string in each line using regex for better control
+            line = re.sub(r'HookContext\s+ctx\(env, &args\);', 'ZygiskContext ctx(env, &args);', line)
+            print(line, end='')
+
+file_path = 'jni_hooks.hpp'
+replace_hook_context(file_path)
