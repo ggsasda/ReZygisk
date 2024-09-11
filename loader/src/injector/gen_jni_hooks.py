@@ -302,10 +302,15 @@ static void do_hook_zygote(JNIEnv *env) {
 }
 """)
 def replace_hook_context(file_path):
+    # Pattern to match the exact string including potential variations
+    pattern = r'HookContext ctx(env, &args);'
+    replacement = 'ZygiskContext ctx(env, &args);'
+    
+    # Open the file and replace occurrences in-place
     with fileinput.FileInput(file_path, inplace=True) as file:
         for line in file:
-            # Replace the target string in each line using regex for better control
-            line = re.sub(r'HookContext\s+ctx\(env, &args\);', 'ZygiskContext ctx(env, &args);', line)
+            # Replace all occurrences of the pattern
+            line = re.sub(pattern, replacement, line)
             print(line, end='')
 
 file_path = 'jni_hooks.hpp'
