@@ -263,12 +263,6 @@ with open('jni_hooks.hpp', 'w') as f:
 
     methods = [spec_q, spec_q_alt, spec_r, spec_u, spec_samsung_q, spec_grapheneos_u]
     f.write(gen_jni_def(zygote, methods))
-    pattern = r'HookContext'
-    replacement = 'ZygiskContext'
-    with fileinput.FileInput(jni_hooks.hpp, inplace=True) as file:
-        for line in file:
-            line = re.sub(pattern, replacement, line)
-            print(line, end='')
             
     methods = [server_l, server_samsung_q]
     f.write(gen_jni_def(zygote, methods))
