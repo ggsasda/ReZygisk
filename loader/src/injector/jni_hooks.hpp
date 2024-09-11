@@ -273,7 +273,7 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     args.whitelisted_data_info_list = &whitelisted_data_info_list;
     args.mount_data_dirs = &mount_data_dirs;
     args.mount_storage_dirs = &mount_storage_dirs;
-    HookContext ctx(env, &args);
+    ZygiskContext ctx(env, &args);
     ctx.nativeSpecializeAppProcess_pre();
     reinterpret_cast<decltype(&nativeSpecializeAppProcess_grapheneos_u)>(nativeSpecializeAppProcess_orig)(
         env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, is_child_zygote, instruction_set, app_data_dir, is_top_app, pkg_data_info_list, whitelisted_data_info_list, mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides, _14
