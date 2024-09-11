@@ -272,10 +272,6 @@ with open('jni_hooks.hpp', 'w') as f:
             
     methods = [server_l, server_samsung_q]
     f.write(gen_jni_def(zygote, methods))
-    with fileinput.FileInput(jni_hooks.hpp, inplace=True) as file:
-        for line in file:
-            line = re.sub(pattern, replacement, line)
-            print(line, end='')
 
     f.write('\n} // namespace\n')
 
@@ -311,7 +307,3 @@ static void do_hook_zygote(JNIEnv *env) {
     jni_hook_list->emplace(clz, std::move(hooks));
 }
 """)
-with fileinput.FileInput(jni_hooks.hpp, inplace=True) as file:
-        for line in file:
-            line = re.sub(pattern, replacement, line)
-            print(line, end='')
