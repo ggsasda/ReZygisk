@@ -127,31 +127,7 @@ void *nativeForkAndSpecialize_orig = nullptr;
     ctx.nativeForkAndSpecialize_post();
     return ctx.pid;
 }
-[[clang::no_stack_protector]] jint nativeForkAndSpecialize_grapheneos_u(
-    JNIEnv *env, 
-    jclass clazz, 
-    jint uid, 
-    jint gid, 
-    jintArray gids, 
-    jint runtime_flags, 
-    jobjectArray rlimits, 
-    jint mount_external, 
-    jstring se_info, 
-    jstring nice_name, 
-    jintArray fds_to_close, 
-    jintArray fds_to_ignore, 
-    jboolean is_child_zygote, 
-    jstring instruction_set, 
-    jstring app_data_dir, 
-    jboolean is_top_app, 
-    jobjectArray pkg_data_info_list, 
-    jobjectArray whitelisted_data_info_list, 
-    jboolean mount_data_dirs, 
-    jboolean mount_storage_dirs, 
-    jboolean mount_sysprop_overrides, 
-    jlongArray _9) {
-
-    // Create argument structure
+[[clang::no_stack_protector]] jint nativeForkAndSpecialize_grapheneos_u(JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name, jintArray fds_to_close, jintArray fds_to_ignore, jboolean is_child_zygote, jstring instruction_set, jstring app_data_dir, jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list, jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides, jlongArray _9) {
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
     args.fds_to_ignore = &fds_to_close;
     args.fds_to_ignore = &fds_to_ignore;
@@ -162,8 +138,6 @@ void *nativeForkAndSpecialize_orig = nullptr;
     args.mount_data_dirs = &mount_data_dirs;
     args.mount_storage_dirs = &mount_storage_dirs;
     args.mount_sysprop_overrides = &mount_sysprop_overrides;
-
-    // Initialize context for GrapheneOS
     ZygiskContext ctx(env, &args);
     ctx.nativeForkAndSpecialize_pre();
 
@@ -297,28 +271,7 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     );
     ctx.nativeSpecializeAppProcess_post();
 }
-[[clang::no_stack_protector]] void nativeSpecializeAppProcess_grapheneos_u(
-    JNIEnv *env, 
-    jclass clazz, 
-    jint uid, 
-    jint gid, 
-    jintArray gids, 
-    jint runtime_flags, 
-    jobjectArray rlimits, 
-    jint mount_external, 
-    jstring se_info, 
-    jstring nice_name, 
-    jboolean is_child_zygote, 
-    jstring instruction_set, 
-    jstring app_data_dir, 
-    jboolean is_top_app, 
-    jobjectArray pkg_data_info_list, 
-    jobjectArray whitelisted_data_info_list, 
-    jboolean mount_data_dirs, 
-    jboolean mount_storage_dirs, 
-    jboolean mount_sysprop_overrides, 
-    jlongArray _14) {
-
+[[clang::no_stack_protector]] void nativeSpecializeAppProcess_grapheneos_u(JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name, jboolean is_child_zygote, jstring instruction_set, jstring app_data_dir, jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list, jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides, jlongArray _14) {
     // Create argument structure
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
     
@@ -345,7 +298,6 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     // Post-process for GrapheneOS (if any)
     ctx.nativeSpecializeAppProcess_post();
 }
-
 std::array nativeSpecializeAppProcess_methods = {
     JNINativeMethod {
         "nativeSpecializeAppProcess",
