@@ -150,7 +150,7 @@ void *nativeForkAndSpecialize_orig = nullptr;
     ctx.nativeForkAndSpecialize_post();
     return result;
 }
-std::array<JNINativeMethod, 9> nativeForkAndSpecialize_methods = {{
+auto nativeSpecializeAppProcess_methods = std::array{
     JNINativeMethod {
         "nativeForkAndSpecialize",
         "(II[II[[IILjava/lang/String;Ljava/lang/String;[ILjava/lang/String;Ljava/lang/String;)I",
@@ -206,7 +206,7 @@ std::array<JNINativeMethod, 9> nativeForkAndSpecialize_methods = {{
         "(II[II[[IILjava/lang/String;Ljava/lang/String;[I[IZLjava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;[Ljava/lang/String;ZZZ[J)I",
         (void *) &nativeForkAndSpecialize_grapheneos_u
     },
-}};
+};
 
 void *nativeSpecializeAppProcess_orig = nullptr;
 [[clang::no_stack_protector]] void nativeSpecializeAppProcess_q(JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name, jboolean is_child_zygote, jstring instruction_set, jstring app_data_dir) {
@@ -298,7 +298,7 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     // Post-process for GrapheneOS (if any)
     ctx.nativeSpecializeAppProcess_post();
 }
-std::array<JNINativeMethod, 6> nativeSpecializeAppProcess_methods = {{
+auto nativeSpecializeAppProcess_methods = std::array{
     JNINativeMethod {
         "nativeSpecializeAppProcess",
         "(II[II[[IILjava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V",
@@ -329,7 +329,7 @@ std::array<JNINativeMethod, 6> nativeSpecializeAppProcess_methods = {{
         "(II[II[[IILjava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;[Ljava/lang/String;ZZ)V",
         (void *) &nativeSpecializeAppProcess_grapheneos_u
     },
-}};
+};
 
 void *nativeForkSystemServer_orig = nullptr;
 [[clang::no_stack_protector]] jint nativeForkSystemServer_l(JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, jobjectArray rlimits, jlong permitted_capabilities, jlong effective_capabilities) {
