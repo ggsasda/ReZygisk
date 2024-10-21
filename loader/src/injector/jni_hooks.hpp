@@ -130,7 +130,7 @@ void *nativeForkAndSpecialize_orig = nullptr;
 [[clang::no_stack_protector]] jint nativeForkAndSpecialize_grapheneos_u(JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name, jintArray fds_to_close, jintArray fds_to_ignore, jboolean is_child_zygote, jstring instruction_set, jstring app_data_dir, jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list, jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides, jlongArray _9) {
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
     args.fds_to_ignore = &fds_to_close;
-    args.fds_to_ignore = &fds_to_ignore;
+    args.fds_to_ignore = &fds_to_ignore; // This should be updated to avoid redundancy.
     args.is_child_zygote = &is_child_zygote;
     args.is_top_app = &is_top_app;
     args.pkg_data_info_list = &pkg_data_info_list;
@@ -138,18 +138,19 @@ void *nativeForkAndSpecialize_orig = nullptr;
     args.mount_data_dirs = &mount_data_dirs;
     args.mount_storage_dirs = &mount_storage_dirs;
     args.mount_sysprop_overrides = &mount_sysprop_overrides;
+
     ZygiskContext ctx(env, &args);
     ctx.nativeForkAndSpecialize_pre();
 
     // Call the original nativeForkAndSpecialize method
-    jint result = reinterpret_cast<jint(*)(JNIEnv *, jclass, jint, jint, jintArray, jint, jobjectArray, jint, jstring, jstring, jintArray, jintArray, jboolean, jstring, jstring, jboolean, jobjectArray, jobjectArray, jboolean, jboolean, jboolean, jlongArray)>(nativeForkAndSpecialize_orig)(
+    jint result = reinterpret_cast<decltype(&nativeForkAndSpecialize_grapheneos_u)>(nativeForkAndSpecialize_orig)(
         env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, fds_to_close, fds_to_ignore, is_child_zygote, instruction_set, app_data_dir, is_top_app, pkg_data_info_list, whitelisted_data_info_list, mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides, _9
     );
 
     ctx.nativeForkAndSpecialize_post();
     return result;
 }
-std::array nativeForkAndSpecialize_methods = {
+std::array<JNINativeMethod, 9> nativeForkAndSpecialize_methods = {{
     JNINativeMethod {
         "nativeForkAndSpecialize",
         "(II[II[[IILjava/lang/String;Ljava/lang/String;[ILjava/lang/String;Ljava/lang/String;)I",
@@ -297,7 +298,7 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     // Post-process for GrapheneOS (if any)
     ctx.nativeSpecializeAppProcess_post();
 }
-std::array nativeSpecializeAppProcess_methods = {
+std::array<JNINativeMethod, 6> nativeSpecializeAppProcess_methods = {{
     JNINativeMethod {
         "nativeSpecializeAppProcess",
         "(II[II[[IILjava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V",
@@ -323,9 +324,9 @@ std::array nativeSpecializeAppProcess_methods = {
         "(II[II[[IILjava/lang/String;IILjava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V",
         (void *) &nativeSpecializeAppProcess_samsung_q
     },
-JNINativeMethod{
+    JNINativeMethod {
         "nativeSpecializeAppProcess",
-        "(II[II[[IILjava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;[Ljava/lang/String;ZZZ[J)V",
+        "(II[II[[IILjava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;[Ljava/lang/String;ZZ)V",
         (void *) &nativeSpecializeAppProcess_grapheneos_u
     },
 };
@@ -370,12 +371,11 @@ static void do_hook_zygote(JNIEnv *env) {
     vector<JNINativeMethod> hooks;
     const char *clz = "com/android/internal/os/Zygote";
 
-    // Hook nativeForkAndSpecialize methods
     hookJniNativeMethods(env, clz, nativeForkAndSpecialize_methods.data(), nativeForkAndSpecialize_methods.size());
     for (auto &method : nativeForkAndSpecialize_methods) {
         if (method.fnPtr) {
-            nativeForkAndSpecialize_orig = method.fnPtr; // Store original method pointer
-            hooks.emplace_back(method); // Add to hooks vector
+            nativeForkAndSpecialize_orig = method.fnPtr;
+            hooks.emplace_back(method);
             break;
         }
     }
@@ -384,22 +384,20 @@ static void do_hook_zygote(JNIEnv *env) {
     hookJniNativeMethods(env, clz, nativeSpecializeAppProcess_methods.data(), nativeSpecializeAppProcess_methods.size());
     for (auto &method : nativeSpecializeAppProcess_methods) {
         if (method.fnPtr) {
-            nativeSpecializeAppProcess_orig = method.fnPtr; // Store original method pointer
-            hooks.emplace_back(method); // Add to hooks vector
+            nativeSpecializeAppProcess_orig = method.fnPtr;
+            hooks.emplace_back(method);
             break;
         }
     }
 
-    // Hook nativeForkSystemServer methods
     hookJniNativeMethods(env, clz, nativeForkSystemServer_methods.data(), nativeForkSystemServer_methods.size());
     for (auto &method : nativeForkSystemServer_methods) {
         if (method.fnPtr) {
-            nativeForkSystemServer_orig = method.fnPtr; // Store original method pointer
-            hooks.emplace_back(method); // Add to hooks vector
+            nativeForkSystemServer_orig = method.fnPtr;
+            hooks.emplace_back(method);
             break;
         }
     }
 
-    // Store all hooks in a list for further use
     jni_hook_list->emplace(clz, std::move(hooks));
 }

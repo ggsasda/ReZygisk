@@ -213,8 +213,9 @@ server_samsung_q = ForkServer('samsung_q', [uid, gid, gids, runtime_flags, Anon(
 # GrapheneOS Android 14 Support
 
 fas_grapheneos_u = ForkAndSpec('grapheneos_u', [uid, gid, gids, runtime_flags, rlimits, mount_external,
-    se_info, nice_name, fds_to_close, fds_to_ignore, is_child_zygote, instruction_set, app_data_dir, 
-    is_top_app, pkg_data_info_list, whitelisted_data_info_list, mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides, Anon(jlongArray)])
+    se_info, nice_name, fds_to_close, fds_to_ignore, is_child_zygote, instruction_set, app_data_dir,
+    is_top_app, pkg_data_info_list, whitelisted_data_info_list, mount_data_dirs, mount_storage_dirs,
+    mount_sysprop_overrides, Anon(jlongArray)])
 
 spec_grapheneos_u = SpecApp('grapheneos_u', [uid, gid, gids, runtime_flags, rlimits, mount_external,
     se_info, nice_name, is_child_zygote, instruction_set, app_data_dir, is_top_app, pkg_data_info_list,
