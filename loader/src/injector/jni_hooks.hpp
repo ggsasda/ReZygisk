@@ -136,7 +136,6 @@ void *nativeForkAndSpecialize_orig = nullptr;
     jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides,
     jlongArray _9) 
 {
-    // Initialize argument structure with provided arguments
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
     args.fds_to_ignore = &fds_to_ignore;
     args.is_child_zygote = &is_child_zygote;
@@ -146,13 +145,9 @@ void *nativeForkAndSpecialize_orig = nullptr;
     args.mount_data_dirs = &mount_data_dirs;
     args.mount_storage_dirs = &mount_storage_dirs;
     args.mount_sysprop_overrides = &mount_sysprop_overrides;
-
-    // Set up context for the method call
     ZygiskContext ctx(env, &args);
     ctx.nativeForkAndSpecialize_pre();
-
-    // Call the original method
-    jint result = reinterpret_cast<decltype(&nativeForkAndSpecialize_grapheneos_u)>(nativeForkAndSpecialize_orig)(
+    reinterpret_cast<decltype(&nativeForkAndSpecialize_grapheneos_u)>(nativeForkAndSpecialize_orig)(
         env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, fds_to_close, fds_to_ignore, 
         is_child_zygote, instruction_set, app_data_dir, is_top_app, pkg_data_info_list, whitelisted_data_info_list, 
         mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides, _9
@@ -292,7 +287,6 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides,
     jlongArray _14)
 {
-    // Initialize argument structure for this method
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
     args.is_child_zygote = &is_child_zygote;
     args.is_top_app = &is_top_app;
@@ -301,19 +295,13 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     args.mount_data_dirs = &mount_data_dirs;
     args.mount_storage_dirs = &mount_storage_dirs;
     args.mount_sysprop_overrides = &mount_sysprop_overrides;
-
-    // Initialize context for the method call
     ZygiskContext ctx(env, &args);
     ctx.nativeSpecializeAppProcess_pre();
-
-    // Call the original method
     reinterpret_cast<decltype(&nativeSpecializeAppProcess_grapheneos_u)>(nativeSpecializeAppProcess_orig)(
         env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, 
         is_child_zygote, instruction_set, app_data_dir, is_top_app, pkg_data_info_list, whitelisted_data_info_list, 
         mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides, _14
     );
-
-    // Perform post-call processing
     ctx.nativeSpecializeAppProcess_post();
 }
 
