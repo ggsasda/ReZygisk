@@ -343,8 +343,8 @@ std::array nativeSpecializeAppProcess_methods = {
         "(II[II[[IILjava/lang/String;IILjava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V",
         (void *) &nativeSpecializeAppProcess_samsung_q
     },
-    JNINativeMethod{
-        "nativeSpecializeAppProcess",
+    JNINativeMethod {
+        "nativeSpecializeAppProcess_grapheneos",
         "(II[II[[IILjava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;[Ljava/lang/String;ZZZ[J)V",
         (void *) &nativeSpecializeAppProcess_grapheneos_u
     },
