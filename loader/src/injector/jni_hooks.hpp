@@ -127,16 +127,9 @@ void *nativeForkAndSpecialize_orig = nullptr;
     ctx.nativeForkAndSpecialize_post();
     return ctx.pid;
 }
-[[clang::no_stack_protector]] jint nativeForkAndSpecialize_grapheneos_u(
-    JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags,
-    jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name,
-    jintArray fds_to_close, jintArray fds_to_ignore, jboolean is_child_zygote,
-    jstring instruction_set, jstring app_data_dir, jboolean is_top_app,
-    jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list,
-    jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides,
-    jlongArray _9) 
-{
+[[clang::no_stack_protector]] jint nativeForkAndSpecialize_grapheneos_u(JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name, jintArray fds_to_close, jintArray fds_to_ignore, jboolean is_child_zygote, jstring instruction_set, jstring app_data_dir, jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list, jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides, jlongArray _9) {
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
+    args.fds_to_ignore = &fds_to_close;
     args.fds_to_ignore = &fds_to_ignore;
     args.is_child_zygote = &is_child_zygote;
     args.is_top_app = &is_top_app;
@@ -153,11 +146,9 @@ void *nativeForkAndSpecialize_orig = nullptr;
         mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides, _9
     );
 
-    // Perform post-call processing
     ctx.nativeForkAndSpecialize_post();
     return ctx.pid;
 }
-
 std::array nativeForkAndSpecialize_methods = {
     JNINativeMethod {
         "nativeForkAndSpecialize",
@@ -279,14 +270,7 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     );
     ctx.nativeSpecializeAppProcess_post();
 }
-[[clang::no_stack_protector]] void nativeSpecializeAppProcess_grapheneos_u(
-    JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags,
-    jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name,
-    jboolean is_child_zygote, jstring instruction_set, jstring app_data_dir,
-    jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list,
-    jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides,
-    jlongArray _14)
-{
+[[clang::no_stack_protector]] void nativeSpecializeAppProcess_grapheneos_u(JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name, jboolean is_child_zygote, jstring instruction_set, jstring app_data_dir, jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list, jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides, jlongArray _14) {
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
     args.is_child_zygote = &is_child_zygote;
     args.is_top_app = &is_top_app;
@@ -298,13 +282,10 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     ZygiskContext ctx(env, &args);
     ctx.nativeSpecializeAppProcess_pre();
     reinterpret_cast<decltype(&nativeSpecializeAppProcess_grapheneos_u)>(nativeSpecializeAppProcess_orig)(
-        env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, 
-        is_child_zygote, instruction_set, app_data_dir, is_top_app, pkg_data_info_list, whitelisted_data_info_list, 
-        mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides, _14
+        env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, is_child_zygote, instruction_set, app_data_dir, is_top_app, pkg_data_info_list, whitelisted_data_info_list, mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides, _14
     );
     ctx.nativeSpecializeAppProcess_post();
 }
-
 std::array nativeSpecializeAppProcess_methods = {
     JNINativeMethod {
         "nativeSpecializeAppProcess",
@@ -331,8 +312,8 @@ std::array nativeSpecializeAppProcess_methods = {
         "(II[II[[IILjava/lang/String;IILjava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V",
         (void *) &nativeSpecializeAppProcess_samsung_q
     },
-    JNINativeMethod {
-        "nativeSpecializeAppProcess_grapheneos",
+    JNINativeMethod{
+        "nativeSpecializeAppProcess",
         "(II[II[[IILjava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;[Ljava/lang/String;ZZZ[J)V",
         (void *) &nativeSpecializeAppProcess_grapheneos_u
     },
