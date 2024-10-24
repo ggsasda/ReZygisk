@@ -295,7 +295,10 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list,
     jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides, jlongArray _14
 ) {
+    // Initialize the AppSpecializeArgs_v5 structure
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
+    
+    // Set pointers for specific fields
     args.is_child_zygote = &is_child_zygote;
     args.is_top_app = &is_top_app;
     args.pkg_data_info_list = &pkg_data_info_list;
@@ -304,16 +307,18 @@ void *nativeSpecializeAppProcess_orig = nullptr;
     args.mount_storage_dirs = &mount_storage_dirs;
     args.mount_sysprop_overrides = &mount_sysprop_overrides;
 
+    // Create the Zygisk context
     ZygiskContext ctx(env, &args);
     ctx.nativeSpecializeAppProcess_pre();
 
-    // Call the appropriate `zygote_methods` function pointer based on GrapheneOS
-    reinterpret_cast<decltype(&nativeSpecializeAppProcess_grapheneos_u)>(g_hook->zygote_methods[12].fnPtr)(
+    // Call the original method
+    reinterpret_cast<decltype(&nativeSpecializeAppProcess_grapheneos_u)>(nativeSpecializeAppProcess_orig)(
         env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name,
         is_child_zygote, instruction_set, app_data_dir, is_top_app, pkg_data_info_list,
         whitelisted_data_info_list, mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides, _14
     );
 
+    // Post-process
     ctx.nativeSpecializeAppProcess_post();
 }
 
