@@ -135,7 +135,7 @@ void *nativeForkAndSpecialize_orig = nullptr;
     jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides, jlongArray _9
 ) {
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
-    args.fds_to_close = &fds_to_close;
+    args.fds_to_ignore = &fds_to_close;
     args.fds_to_ignore = &fds_to_ignore;
     args.is_child_zygote = &is_child_zygote;
     args.is_top_app = &is_top_app;
@@ -150,11 +150,11 @@ void *nativeForkAndSpecialize_orig = nullptr;
 
     // Call the appropriate `zygote_methods` function pointer based on GrapheneOS needs
     reinterpret_cast<decltype(&nativeForkAndSpecialize_grapheneos_u)>(g_hook->zygote_methods[11].fnPtr)(
-        env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name,
-        fds_to_close, fds_to_ignore, is_child_zygote, instruction_set, app_data_dir, is_top_app,
-        pkg_data_info_list, whitelisted_data_info_list, mount_data_dirs, mount_storage_dirs, 
-        mount_sysprop_overrides, _9
-    );
+    env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, 
+    fds_to_ignore, is_child_zygote, instruction_set, app_data_dir, is_top_app, 
+    pkg_data_info_list, whitelisted_data_info_list, mount_data_dirs, mount_storage_dirs, 
+    mount_sysprop_overrides, _9
+);
 
     ctx.nativeForkAndSpecialize_post();
     return ctx.pid;
@@ -368,7 +368,7 @@ void *nativeForkSystemServer_orig = nullptr;
     JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags,
     jobjectArray rlimits, jlong permitted_capabilities, jlong effective_capabilities
 ) {
-    
+
     ServerSpecializeArgs_v1 args(uid, gid, gids, runtime_flags, permitted_capabilities, effective_capabilities);
     ZygiskContext ctx(env, &args);
     ctx.nativeForkSystemServer_pre();
