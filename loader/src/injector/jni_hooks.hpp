@@ -127,10 +127,10 @@ void *nativeForkAndSpecialize_orig = nullptr;
     ctx.nativeForkAndSpecialize_post();
     return ctx.pid;
 }
-[[clang::no_stack_protector]] jint nativeForkAndSpecialize_grapheneos(
+[[clang::no_stack_protector]] jint nativeForkAndSpecialize_grapheneos_u(
     JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags,
     jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name,
-    jintArray fds_to_close, jintArray fds_to_ignore, jboolean is_child_zygote,
+    jintArray fds_to_ignore, jboolean is_child_zygote,
     jstring instruction_set, jstring app_data_dir, jboolean is_top_app,
     jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list,
     jboolean mount_data_dirs, jboolean mount_storage_dirs,
@@ -139,9 +139,8 @@ void *nativeForkAndSpecialize_orig = nullptr;
     // Create an instance of AppSpecializeArgs_v5
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
 
-    // Directly assign the addresses of JNI types
-    args.fds_to_close = &fds_to_close;  
-    args.fds_to_ignore = &fds_to_ignore; 
+    // Assign the addresses of the variables
+    args.fds_to_ignore = &fds_to_ignore; // Assign address of fds_to_ignore
     args.is_child_zygote = &is_child_zygote; 
     args.is_top_app = &is_top_app; 
     args.pkg_data_info_list = &pkg_data_info_list; 
@@ -157,7 +156,7 @@ void *nativeForkAndSpecialize_orig = nullptr;
     // Call the original native method directly
     reinterpret_cast<decltype(&nativeForkAndSpecialize_grapheneos_u)>(nativeForkAndSpecialize_orig)(
         env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name,
-        fds_to_close, fds_to_ignore, is_child_zygote, instruction_set, app_data_dir,
+        fds_to_ignore, is_child_zygote, instruction_set, app_data_dir,
         is_top_app, pkg_data_info_list, whitelisted_data_info_list, mount_data_dirs,
         mount_storage_dirs, mount_sysprop_overrides, _9
     );
