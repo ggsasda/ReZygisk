@@ -285,7 +285,7 @@ void *nativeSpecializeAppProcess_orig = nullptr;
 }
 [[clang::no_stack_protector]] void nativeSpecializeAppProcess_grapheneos_u(
     JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags,
-    jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name,
+    jobjectArray rlimits, jint mount_external, jstring se_info, jint _10, jint _11, jstring nice_name,
     jboolean is_child_zygote, jstring instruction_set, jstring app_data_dir,
     jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list,
     jboolean mount_data_dirs, jboolean mount_storage_dirs, jboolean mount_sysprop_overrides, jlongArray _14
@@ -367,7 +367,7 @@ void *nativeForkSystemServer_orig = nullptr;
     return ctx.pid;
 }
 [[clang::no_stack_protector]] jint nativeForkSystemServer_grapheneos_u(
-    JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags,
+    JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, jint _13, jint _14,
     jobjectArray rlimits, jlong permitted_capabilities, jlong effective_capabilities
 ) {
 
@@ -376,7 +376,7 @@ void *nativeForkSystemServer_orig = nullptr;
     ctx.nativeForkSystemServer_pre();
 
     reinterpret_cast<decltype(&nativeForkSystemServer_grapheneos_u)>(nativeForkSystemServer_orig)(
-        env, clazz, uid, gid, gids, runtime_flags, rlimits, permitted_capabilities, effective_capabilities
+        env, clazz, uid, gid, gids, runtime_flags, _13, _14, rlimits, permitted_capabilities, effective_capabilities
     );
 
     ctx.nativeForkSystemServer_post();
