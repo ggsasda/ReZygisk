@@ -130,33 +130,34 @@ void *nativeForkAndSpecialize_orig = nullptr;
 [[clang::no_stack_protector]] int nativeForkAndSpecialize_grapheneos_u(
     JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, 
     jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name,
-    jintArray fds_to_close, jintArray fds_to_ignore, jboolean start_child_zygote, 
+    jintArray fds_to_close, jintArray fds_to_ignore, jboolean is_child_zygote, 
     jstring instruction_set, jstring app_data_dir, jboolean is_top_app, 
-    jobjectArray pkg_data_info_list, jobjectArray allowlisted_data_info_list,
-    jboolean bind_mount_app_data_dirs, jboolean bind_mount_app_storage_dirs, 
-    jboolean bind_mount_sysprop_overrides, jlongArray extra_long_args
+    jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list,
+    jboolean mount_data_dirs, jboolean mount_storage_dirs, 
+    jboolean mount_sysprop_overrides
 ) {
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
 
     args.fds_to_close = &fds_to_close;
     args.fds_to_ignore = &fds_to_ignore;
-    args.start_child_zygote = &start_child_zygote;
+    args.is_child_zygote = &is_child_zygote;
     args.is_top_app = &is_top_app;
     args.pkg_data_info_list = &pkg_data_info_list;
-    args.allowlisted_data_info_list = &allowlisted_data_info_list;
-    args.bind_mount_app_data_dirs = &bind_mount_app_data_dirs;
-    args.bind_mount_app_storage_dirs = &bind_mount_app_storage_dirs;
-    args.bind_mount_sysprop_overrides = &bind_mount_sysprop_overrides;
-    args.extra_long_args = &extra_long_args;
+    args.whitelisted_data_info_list = &whitelisted_data_info_list;
+    args.mount_data_dirs = &mount_data_dirs;
+    args.mount_storage_dirs = &mount_storage_dirs;
+    args.mount_sysprop_overrides = &mount_sysprop_overrides;
+
     ZygiskContext ctx(env, &args);
     ctx.nativeForkAndSpecialize_pre();
+
     int pid = reinterpret_cast<decltype(&nativeForkAndSpecialize_grapheneos_u)>(nativeForkAndSpecialize_orig)(
         env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, 
-        fds_to_close, fds_to_ignore, start_child_zygote, instruction_set, app_data_dir, 
-        is_top_app, pkg_data_info_list, allowlisted_data_info_list, 
-        bind_mount_app_data_dirs, bind_mount_app_storage_dirs, bind_mount_sysprop_overrides, 
-        extra_long_args
+        fds_to_close, fds_to_ignore, is_child_zygote, instruction_set, app_data_dir, 
+        is_top_app, pkg_data_info_list, whitelisted_data_info_list, 
+        mount_data_dirs, mount_storage_dirs, mount_sysprop_overrides
     );
+
     ctx.nativeForkAndSpecialize_post();
     return pid;
 }
@@ -284,28 +285,31 @@ void *nativeSpecializeAppProcess_orig = nullptr;
 [[clang::no_stack_protector]] void nativeSpecializeAppProcess_grapheneos_u(
     JNIEnv *env, jclass clazz, jint uid, jint gid, jintArray gids, jint runtime_flags, 
     jobjectArray rlimits, jint mount_external, jstring se_info, jstring nice_name, 
-    jboolean start_child_zygote, jstring instruction_set, jstring app_data_dir, 
-    jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray allowlisted_data_info_list,
-    jboolean bind_mount_app_data_dirs, jboolean bind_mount_app_storage_dirs, 
-    jboolean bind_mount_sysprop_overrides, jlongArray extra_long_args
+    jboolean is_child_zygote, jstring instruction_set, jstring app_data_dir, 
+    jboolean is_top_app, jobjectArray pkg_data_info_list, jobjectArray whitelisted_data_info_list,
+    jboolean mount_data_dirs, jboolean mount_storage_dirs, 
+    jboolean mount_sysprop_overrides
 ) {
     AppSpecializeArgs_v5 args(uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, instruction_set, app_data_dir);
-    args.start_child_zygote = &start_child_zygote;
+
+    args.is_child_zygote = &is_child_zygote;
     args.is_top_app = &is_top_app;
     args.pkg_data_info_list = &pkg_data_info_list;
-    args.allowlisted_data_info_list = &allowlisted_data_info_list;
-    args.bind_mount_app_data_dirs = &bind_mount_app_data_dirs;
-    args.bind_mount_app_storage_dirs = &bind_mount_app_storage_dirs;
-    args.bind_mount_sysprop_overrides = &bind_mount_sysprop_overrides;
-    args.extra_long_args = &extra_long_args;
+    args.whitelisted_data_info_list = &whitelisted_data_info_list;
+    args.mount_data_dirs = &mount_data_dirs;
+    args.mount_storage_dirs = &mount_storage_dirs;
+    args.mount_sysprop_overrides = &mount_sysprop_overrides;
+
     ZygiskContext ctx(env, &args);
     ctx.nativeSpecializeAppProcess_pre();
+
     reinterpret_cast<decltype(&nativeSpecializeAppProcess_grapheneos_u)>(nativeSpecializeAppProcess_orig)(
         env, clazz, uid, gid, gids, runtime_flags, rlimits, mount_external, se_info, nice_name, 
-        start_child_zygote, instruction_set, app_data_dir, is_top_app, 
-        pkg_data_info_list, allowlisted_data_info_list, bind_mount_app_data_dirs, 
-        bind_mount_app_storage_dirs, bind_mount_sysprop_overrides, extra_long_args
+        is_child_zygote, instruction_set, app_data_dir, is_top_app, 
+        pkg_data_info_list, whitelisted_data_info_list, mount_data_dirs, 
+        mount_storage_dirs, mount_sysprop_overrides
     );
+
     ctx.nativeSpecializeAppProcess_post();
 }
 std::array nativeSpecializeAppProcess_methods = {
